@@ -3,7 +3,7 @@ name: Delete Old Workflows
 on:
   workflow_dispatch:
   schedule:
-    - cron: '6 17 * * *' # 非夏令时期，请根据当前时期是否使用夏令时自行调整
+    - cron: '5 2 * * *'
 
 jobs:
   Cleaning:
