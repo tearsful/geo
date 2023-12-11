@@ -3,7 +3,7 @@ name: Scheduled Geo Data Update
 on:
   schedule:
     # 每天 11:05 AM UTC 运行
-    - cron: '5 11 * * *'
+    - cron: '0 2 * * *'
 
 jobs:
   update-geo-data:
