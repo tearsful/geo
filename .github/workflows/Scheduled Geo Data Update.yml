@@ -1,6 +1,7 @@
 name: Scheduled Geo Data Update
 
 on:
+  workflow_dispatch:
   schedule:
     # 每天 11:05 AM UTC 运行
     - cron: '0 2 * * *'
