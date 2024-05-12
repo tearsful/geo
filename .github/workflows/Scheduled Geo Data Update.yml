@@ -74,3 +74,14 @@ jobs:
           asset_path: /tmp/geoip_cn.txt
           asset_name: geoip_cn.txt
           asset_content_type: text/plain
+
+      - name: Upload Last Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: /tmp/geosite_geolocation-!cn.txt
+          asset_name: geosite_geolocation-!cn.txt
+          asset_content_type: text/plain
+          
