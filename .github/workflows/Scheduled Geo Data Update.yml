@@ -29,6 +29,7 @@ jobs:
         run: |
           /opt/v2dat unpack geoip -o /tmp -f cn /tmp/geoip.dat
           /opt/v2dat unpack geosite -o /tmp -f cn /tmp/geosite.dat
+          /opt/v2dat unpack geosite -o /tmp -f 'geolocation-!cn' /tmp/geosite.dat
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%y%m%d%H%M%S')"
