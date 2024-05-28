@@ -32,9 +32,7 @@ jobs:
          /opt/v2dat unpack geoip -o /tmp -f cn /tmp/geoip.dat
          /opt/v2dat unpack geosite -o /tmp -f cn -f apple /tmp/geosite.dat
          /opt/v2dat unpack geosite -o /tmp -f category-ads-all /tmp/geosite.dat
-
-         if [ -f /tmp/geosite_geolocation-\!cn.txt ]; then
-          mv /tmp/geosite_geolocation-\!cn.txt /tmp/geosite_geolocation-nocn.txt
+         mv /tmp/geosite_geolocation-\!cn.txt /tmp/geosite_geolocation-nocn.txt
          set -H
       - name: Get current date
         id: date
