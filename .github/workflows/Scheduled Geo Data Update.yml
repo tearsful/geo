@@ -27,9 +27,15 @@ jobs:
       
       - name: Unpack geo data
         run: |
-          /opt/v2dat unpack geoip -o /tmp -f cn /tmp/geoip.dat
-          /opt/v2dat unpack geosite -o /tmp -f cn /tmp/geosite.dat
-          /opt/v2dat unpack geosite -o /tmp -f 'geolocation-!cn' /tmp/geosite.dat
+         set +H
+         /opt/v2dat unpack geosite -o /tmp -f geolocation-\!cn /tmp/geosite.dat
+         /opt/v2dat unpack geoip -o /tmp -f cn /tmp/geoip.dat
+         /opt/v2dat unpack geosite -o /tmp -f cn -f apple /tmp/geosite.dat
+         /opt/v2dat unpack geosite -o /tmp -f category-ads-all /tmp/geosite.dat
+
+         if [ -f /tmp/geosite_geolocation-\!cn.txt ]; then
+          mv /tmp/geosite_geolocation-\!cn.txt /tmp/geosite_geolocation-nocn.txt
+         set -H
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%y%m%d%H%M%S')"
@@ -81,7 +87,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: /tmp/geosite_geolocation-!cn.txt
-          asset_name: geosite_geolocation-!cn.txt
+          asset_path: /tmp/geosite_geolocation-nocn.txt
+          asset_name: geosite_geolocation-nocn.txt
           asset_content_type: text/plain
           
