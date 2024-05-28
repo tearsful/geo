@@ -91,3 +91,22 @@ jobs:
           asset_name: geosite_geolocation-nocn.txt
           asset_content_type: text/plain
           
+      - name: Upload Last Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: /tmp/geosite_category-ads-all.txt
+          asset_name: geosite_category-ads-all.txt
+          asset_content_type: text/plain
+
+      - name: Upload Last Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: /tmp/geosite_apple.txt
+          asset_name: geosite_apple.txt
+          asset_content_type: text/plain          
