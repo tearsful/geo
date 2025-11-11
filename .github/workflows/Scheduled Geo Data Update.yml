@@ -24,6 +24,31 @@ jobs:
       - name: Update ad block list
         run: |
           wget -O /tmp/disable-ads.txt https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/reject-list.txt
+
+      - name: Download MikroTik CN IP lists
+        run: |
+          set -euo pipefail
+          download_with_retry() {
+            local url="$1"
+            local output="$2"
+            for attempt in 1 2 3; do
+              if wget -O "$output" "$url"; then
+                return 0
+              fi
+              if [ "$attempt" -lt 3 ]; then
+                echo "Retrying download ($attempt/3)..."
+                sleep 2
+              fi
+            done
+            return 1
+          }
+          mkdir -p /tmp/mikrotik
+          download_with_retry "https://www.ipdeny.com/ipblocks/data/countries/cn.zone" "/tmp/mikrotik/all_cn.txt" &
+          pid_v4=$!
+          download_with_retry "https://www.ipdeny.com/ipv6/ipaddresses/blocks/cn.zone" "/tmp/mikrotik/all_cn_ipv6.txt" &
+          pid_v6=$!
+          wait "$pid_v4" || exit 1
+          wait "$pid_v6" || exit 1
       
       - name: Unpack geo data
         run: |
@@ -108,3 +133,23 @@ jobs:
           asset_path: /tmp/geosite_apple.txt
           asset_name: geosite_apple.txt
           asset_content_type: text/plain          
+
+      - name: Upload MikroTik IPv4 CIDR Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: /tmp/mikrotik/all_cn.txt
+          asset_name: mikrotik_cn_ipv4.txt
+          asset_content_type: text/plain
+
+      - name: Upload MikroTik IPv6 CIDR Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: /tmp/mikrotik/all_cn_ipv6.txt
+          asset_name: mikrotik_cn_ipv6.txt
+          asset_content_type: text/plain
