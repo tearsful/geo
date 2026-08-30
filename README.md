@@ -1,2 +1,2 @@
 # geo
-Mikrotik_CNIP/CNIPV6
+Mikrotik_CNIP/CNIPV6 with auto update
